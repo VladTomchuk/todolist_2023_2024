@@ -5,9 +5,9 @@ import {Todolist} from "./Todolist";
 function App() {
     return (
         <div className="App">
-            <Todolist/>
-            <Todolist/>
-            <Todolist/>
+            <Todolist title="Technologies that I've studied"/>
+            <Todolist title="Technologies that I am studying"/>
+            <Todolist title="Technologies that I will study"/>
         </div>
     );
 }
