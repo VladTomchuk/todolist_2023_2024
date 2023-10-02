@@ -3,13 +3,14 @@ import {FilterValuesType, TaskPropsType} from "./App";
 
 
 type PropsType = {
+    todolistId: string
     currentFilterValue: FilterValuesType
-    title: string
     tasks: TaskPropsType[]
-    removeTask: (taskId: string) => void
-    changeFilter: (value: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeIsDoneStatus: (taskId: string, isDoneTask: boolean) => void
+    removeTask: (taskId: string, todolistId: string) => void
+    changeFilter: (todolistId: string, value: FilterValuesType) => void
+    addTask: (title: string, todolistId: string) => void
+    changeIsDoneStatus: (todolistId: string, taskId: string) => void
+    removeTodolist: (todolistId: string) => void
 }
 
 export const Todolist = (props: PropsType) => {
@@ -31,7 +32,7 @@ export const Todolist = (props: PropsType) => {
         }
     }
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-       emptyValueError && setEmptyValueError(false)
+        emptyValueError && setEmptyValueError(false)
         setTitle(e.currentTarget.value)
     }
 
