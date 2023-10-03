@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from "./Todolist";
+import {Todolist} from "./components/Todolist";
 import {v1} from "uuid";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
-export type TaskPropsType = {
+export type TaskType = {
     id: string,
     title: string,
     isDone: boolean
@@ -18,7 +18,7 @@ export type TodolistType = {
 }
 
 export type TasksStateType = {
-    [todolistId: string]: TaskPropsType[]
+    [todolistId: string]: TaskType[]
 }
 
 function App() {
@@ -50,7 +50,7 @@ function App() {
         }
     )
 
-    const getTasksForRender = (tasks: TaskPropsType[], currentFilterValue: FilterValuesType) => {
+    const getTasksForRender = (tasks: TaskType[], currentFilterValue: FilterValuesType) => {
         switch (currentFilterValue) {
             case "active":
                 return tasks.filter(t => !t.isDone)
@@ -104,32 +104,32 @@ function App() {
         delete tasks[todolistId]
     }
 
+    const todolistsComponents = todolists.map(tl => {
+
+            const tasksForTodolist = getTasksForRender(tasks[tl.todolistId], tl.filter)
+
+            return (
+                <Todolist
+                    key={tl.todolistId}
+                    title={tl.title}
+                    todolistId={tl.todolistId}
+                    currentFilterValue={tl.filter}
+                    tasks={tasksForTodolist}
+                    removeTask={removeTask}
+                    changeFilter={changeFilter}
+                    addTask={addTask}
+                    changeIsDoneStatus={changeIsDoneStatus}
+                    removeTodolist={removeTodolist}
+                />
+            )
+        }
+    )
+
     return (
         <div className="App">
-            {
-                todolists.map(tl => {
-
-                        const tasksForTodolist = getTasksForRender(tasks[tl.todolistId], tl.filter)
-
-                        return (
-                            <Todolist
-                                todolistId={tl.todolistId}
-                                currentFilterValue={tl.filter}
-                                tasks={tasksForTodolist}
-                                removeTask={removeTask}
-                                changeFilter={changeFilter}
-                                addTask={addTask}
-                                changeIsDoneStatus={changeIsDoneStatus}
-                                removeTodolist={removeTodolist}
-                            />
-                        )
-                    }
-                )
-            }
+            {todolistsComponents}
         </div>
     )
-        ;
 }
-
 
 export default App;

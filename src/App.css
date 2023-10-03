@@ -1,36 +1,55 @@
 .App {
-  padding: 30px;
-  display: flex;
+    padding: 30px;
+    display: flex;
 }
 
 .App > div {
-  margin-right: 50px;
+    margin-right: 50px;
 }
 
-.task{
-  font-weight: bold;
+.task {
+    font-weight: bold;
 }
 
-.taskDone{
+.taskDone {
 
-  opacity: 0.5;
-  text-decoration: line-through;
+    opacity: 0.5;
+    text-decoration: line-through;
 }
 
-.btn-filter{
-  color: coral;
-  background: floralwhite;
-  border: 1px solid lightcoral;
-  border-radius: 3px;
+.btn-filter {
+    color: coral;
+    background: floralwhite;
+    border: 1px solid lightcoral;
+    border-radius: 3px;
 }
 
-.btn-filter-active{
-  background: coral;
-  border-radius: 3px;
-  color: white;
-  border: 1px solid coral;
+.btn-filter-active {
+    background: coral;
+    border-radius: 3px;
+    color: white;
+    border: 1px solid coral;
 }
 
-.empty-value{
-  border:1px solid red;
+.empty-value {
+    border: 1px solid red;
+}
+
+.todolistTitleContainer span {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 5px;
+}
+
+.todolistTitleContainer {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.todolistContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
