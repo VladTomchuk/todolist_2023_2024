@@ -1,14 +1,16 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import {TaskType} from "../App";
 
 type TaskPropsType = {
     removeTask: () => void
     changeIsDoneStatus: (isDone: boolean) => void
 } & TaskType
+
 export const Task = (props: TaskPropsType) => {
-    const onChangeValueIsDoneHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeValueIsDoneHandler = () => {
         props.changeIsDoneStatus(props.isDone)
     }
+
     return (
         <ul>
             <li key={props.id} className={props.isDone ? "taskDone" : "task"}>
