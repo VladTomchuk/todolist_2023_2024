@@ -3,6 +3,10 @@ import {FilterValuesType, TaskType} from "../App";
 import "../App.css";
 import {Task} from "./Task";
 import AddItemForm from "./AddItemForm";
+import EditableSpan from "./EditableSpan";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
 
 type PropsType = {
     title: string
@@ -14,6 +18,8 @@ type PropsType = {
     callback: (todolistId: string, title: string) => void
     changeIsDoneStatus: (todolistId: string, taskId: string, isDone: boolean) => void
     removeTodolist: (todolistId: string) => void
+    updateTask: (todolistId: string, taskId: string, newTitle: string) => void
+    updateTodoTitle: (todolistId: string, newTitle: string) => void
 }
 
 export const Todolist = (props: PropsType) => {
@@ -33,40 +39,67 @@ export const Todolist = (props: PropsType) => {
     const AddItemFormHandler = (newTitle: string) => {
         props.callback(props.todolistId, newTitle)
     }
-
+    const updateTaskHandler = (taskId: string, newTitle: string) => {
+        props.updateTask(props.todolistId, taskId, newTitle)
+    }
+    const updateTodoTitleHandler = (newTitle: string) => {
+        props.updateTodoTitle(props.todolistId, newTitle)
+    }
     return (
         <div className={"todolistContainer"}>
-            <div className={"todolistTitleContainer"}>
-                <h3>{props.title}</h3>
-                <span onClick={onclickRemoveTodolistHandler}>✖️</span>
+            <div className={"todoTitleDiv"}>
+                <h3><EditableSpan oldTitle={props.title} callback={updateTodoTitleHandler}/></h3>
+                <IconButton onClick={onclickRemoveTodolistHandler} aria-label="delete">
+                    <DeleteIcon/>
+                </IconButton>
             </div>
             <AddItemForm callback={AddItemFormHandler}/>
             <div>
                 {props.tasks.map((t: TaskType) => {
                     const removeTaskCallback = () => props.removeTask(props.todolistId, t.id)
                     const changeIsDoneStatusHandler = (isDone: boolean) => props.changeIsDoneStatus(props.todolistId, t.id, isDone)
+                    const callbackHandler = (newTitle: string) => updateTaskHandler(t.id, newTitle)
+
                     return (
                         <Task
                             key={t.id}
                             {...t}
                             removeTask={removeTaskCallback}
                             changeIsDoneStatus={changeIsDoneStatusHandler}
+                            callback={callbackHandler}
                         />
                     )
                 })}
             </div>
 
+            {/*BUTTONS OF FILTRATION */}
             <div>
-                <button className={props.currentFilterValue === "all" ? "btn-filter-active" : "btn-filter"}
-                        onClick={onAllClickHandler}>All
-                </button>
-                <button className={props.currentFilterValue === "active" ? "btn-filter-active" : "btn-filter"}
-                        onClick={onActiveClickHandler}>Active
-                </button>
-                <button className={props.currentFilterValue === "completed" ? "btn-filter-active" : "btn-filter"}
-                        onClick={onComletedClickHandler}>Completed
-                </button>
+
+                <Button
+                    size="small"
+                    variant={props.currentFilterValue === "all" ? "contained" : "outlined"}
+                    onClick={onAllClickHandler}
+                    color="primary">
+                    All
+                </Button>
+
+                <Button
+                    size="small"
+                    variant={props.currentFilterValue === "active" ? "contained" : "outlined"}
+                    onClick={onActiveClickHandler}
+                    color="warning">Active
+                </Button>
+
+                <Button
+                    size="small"
+                    variant={props.currentFilterValue === "completed" ? "contained" : "outlined"}
+                    onClick={onComletedClickHandler}
+                    color="success">
+                    Completed
+                </Button>
+
             </div>
+
         </div>
     )
 }

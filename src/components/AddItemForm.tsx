@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 type PropsType = {
     callback: (newTitle: string) => void
@@ -6,7 +8,7 @@ type PropsType = {
 const AddItemForm = (props: PropsType) => {
 
     let [title, setTitle] = useState('')
-    let [emptyValueError, setEmptyValueError] = useState(false)
+    let [emptyValueError, setEmptyValueError] = useState<boolean | string>(false)
 
     const addTitleHandler = () => {
         if (title.trim() !== '') {
@@ -26,16 +28,30 @@ const AddItemForm = (props: PropsType) => {
         setTitle(e.currentTarget.value)
     }
 
+    const styledButton = {
+        maxWidth: "38px",
+        maxHeight: "38px",
+        minWidth: "38px",
+        minHeight: "38px",
+    }
+
     return (
         <div>
-            <input
+
+            <TextField
+                error={!!emptyValueError}
+                size="small"
                 value={title}
                 onKeyPress={onKeyPressHandler}
                 onChange={onChangeInputHandler}
-                className={emptyValueError ? 'empty-value' : ''}
+                id="outlined-basic"
+                label={emptyValueError ? 'some error' : 'Type here...'} // как вывести текст типа ошибки ?
+                variant="outlined"
+                className={''}
             />
-            <button onClick={addTitleHandler}>+</button>
-            {emptyValueError && <div>Please type title!</div>}
+
+            <Button style={styledButton} variant="contained" size="small" onClick={addTitleHandler}>+</Button>
+            {/*{emptyValueError && <div>Please type title!</div>}*/}
         </div>
     );
 };
