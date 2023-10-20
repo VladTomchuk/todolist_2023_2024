@@ -23,7 +23,6 @@ type PropsType = {
 }
 
 export const Todolist = (props: PropsType) => {
-
     const onAllClickHandler = () => {
         props.changeFilter(props.todolistId, 'all')
     }
@@ -48,7 +47,12 @@ export const Todolist = (props: PropsType) => {
     return (
         <div className={"todolistContainer"}>
             <div className={"todoTitleDiv"}>
-                <h3><EditableSpan oldTitle={props.title} callback={updateTodoTitleHandler}/></h3>
+                <h3>
+                    <EditableSpan
+                        oldTitle={props.title}
+                        callback={updateTodoTitleHandler}
+                    />
+                </h3>
                 <IconButton onClick={onclickRemoveTodolistHandler} aria-label="delete">
                     <DeleteIcon/>
                 </IconButton>

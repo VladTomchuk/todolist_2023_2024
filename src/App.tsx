@@ -78,9 +78,7 @@ function App() {
 
     }
     const changeFilter = (todolistId: string, value: FilterValuesType) => {
-
         setTodolists(todolists.map(tl => tl.todolistId === todolistId ? {...tl, filter: value} : tl))
-
     }
     const addTask = (todolistId: string, title: string) => {
         const newTask = {
@@ -99,9 +97,7 @@ function App() {
         setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
     }
     const changeIsDoneStatus = (todolistId: string, taskId: string) => {
-
         setTasks({...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId ? {...t, isDone: !t.isDone} : t)})
-
     }
     const removeTodolist = (todolistId: string) => {
         setTodolists(todolists.filter(tl => tl.todolistId !== todolistId))
@@ -147,7 +143,6 @@ function App() {
                             updateTodoTitle={updateTodoTitle}
                         />
                     </Paper>
-
                 </Grid>
             )
         }
