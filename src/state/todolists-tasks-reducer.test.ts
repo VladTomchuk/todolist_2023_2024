@@ -15,6 +15,6 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0]
     const idFromTodolists = endTodolistsState[0].todolistId
 
-    expect(idFromTasks).toBe(action.payload.newTodolistId)
-    expect(idFromTodolists).toBe(action.payload.newTodolistId)
+    expect(idFromTasks).toBe(action.newTodolistId)
+    expect(idFromTodolists).toBe(action.newTodolistId)
 })
