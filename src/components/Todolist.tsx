@@ -40,6 +40,7 @@ export const Todolist = (props: PropsType) => {
     }
     const updateTaskHandler = (taskId: string, newTitle: string) => {
         props.updateTask(props.todolistId, taskId, newTitle)
+
     }
     const updateTodoTitleHandler = (newTitle: string) => {
         props.updateTodoTitle(props.todolistId, newTitle)
@@ -61,7 +62,7 @@ export const Todolist = (props: PropsType) => {
             <div>
                 {props.tasks.map((t: TaskType) => {
                     const removeTaskCallback = () => props.removeTask(props.todolistId, t.id)
-                    const changeIsDoneStatusHandler = (isDone: boolean) => props.changeIsDoneStatus(props.todolistId, t.id, isDone)
+                    const changeIsDoneStatusHandler = (taskId: string, isDone: boolean) => props.changeIsDoneStatus(props.todolistId, t.id, isDone)
                     const callbackHandler = (newTitle: string) => updateTaskHandler(t.id, newTitle)
 
                     return (
@@ -70,7 +71,7 @@ export const Todolist = (props: PropsType) => {
                             {...t}
                             removeTask={removeTaskCallback}
                             changeIsDoneStatus={changeIsDoneStatusHandler}
-                            callback={callbackHandler}
+                            updateTaskHandler={callbackHandler}
                         />
                     )
                 })}

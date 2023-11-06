@@ -41,7 +41,7 @@ export type TasksStateType = {
     [todolistId: string]: TaskType[]
 }
 
-function App() {
+function AppWithReducer() {
     //BLL:
     const todolistId1 = v1()
     const todolistId2 = v1()
@@ -150,4 +150,4 @@ function App() {
     )
 }
 
-export default App;
+export default AppWithReducer;

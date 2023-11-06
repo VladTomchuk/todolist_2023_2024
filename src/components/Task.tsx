@@ -1,20 +1,30 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {TaskType} from "../App";
 import EditableSpan from "./EditableSpan";
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
 import SuperCheckbox from "./SuperCheckbox";
+import {RemoveSuperButton} from "./RemoveSuperButton";
+
 
 type TaskPropsType = {
-    removeTask: () => void
-    changeIsDoneStatus: (isDone: boolean) => void
-    callback: (newTitle: string) => void
+    removeTask: (taskId: string) => void
+    changeIsDoneStatus: (taskId: string, isDone: boolean) => void
+    updateTaskHandler: (taskId: string, newTitle: string) => void
+
 } & TaskType
 
-export const Task = (props: TaskPropsType) => {
-    const onChangeValueIsDoneHandler = (isDone:boolean) => {
-        props.changeIsDoneStatus(isDone)
-    }
+export const Task = React.memo((props: TaskPropsType) => {
+    //console.log('Task is rendered!')
+
+    const onChangeValueIsDoneHandler = useCallback((isDone: boolean) => {
+        props.changeIsDoneStatus(props.id, isDone)
+    }, [props.changeIsDoneStatus, props.id])
+    const updateCallback = useCallback((newTitle: string) => {
+        props.updateTaskHandler(props.id, newTitle)
+    }, [props.id])
+    const removeTaskHandler = useCallback(() => {
+        props.removeTask(props.id)
+    }, [props.id])
+
     return (
         <ul>
             <li key={props.id} className={props.isDone ? "taskDone" : "task"}>
@@ -26,14 +36,13 @@ export const Task = (props: TaskPropsType) => {
 
                 <EditableSpan
                     oldTitle={props.title}
-                    callback={props.callback}
+                    callback={updateCallback}
                 />
 
-                <IconButton size="small" onClick={props.removeTask} aria-label="delete">
-                    <DeleteIcon fontSize="small"/>
-                </IconButton>
+                <RemoveSuperButton callback={removeTaskHandler}/>
 
             </li>
         </ul>
     )
-}
+})
+

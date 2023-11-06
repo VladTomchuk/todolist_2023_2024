@@ -1,30 +1,34 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useCallback, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 type PropsType = {
     callback: (newTitle: string) => void
 }
-const AddItemForm = (props: PropsType) => {
-
+const AddItemForm = memo((props: PropsType) => {
+    //console.log('addItemForm is called')
     let [title, setTitle] = useState('')
-    let [emptyValueError, setEmptyValueError] = useState<boolean | string>(false)
+    let [error, setError] = useState<string | null>(null)
 
-    const addTitleHandler = () => {
+    const addTitleHandler = useCallback(() => {
         if (title.trim() !== '') {
             props.callback(title.trim())
+            setTitle('')
         } else {
-            setEmptyValueError(true)
+            setError('title is required')
         }
-        setTitle('')
-    }
+    }, [props.callback, title])
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
+            setError(null)
+        }
+
         if (e.key === 'Enter') {
             addTitleHandler()
         }
     }
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        emptyValueError && setEmptyValueError(false)
+        // error && setError(null)
         setTitle(e.currentTarget.value)
     }
 
@@ -39,13 +43,13 @@ const AddItemForm = (props: PropsType) => {
         <div>
 
             <TextField
-                error={!!emptyValueError}
+                error={!!error}
                 size="small"
                 value={title}
                 onKeyPress={onKeyPressHandler}
                 onChange={onChangeInputHandler}
                 id="outlined-basic"
-                label={emptyValueError ? 'some error' : 'Type here...'} // как вывести текст типа ошибки ?
+                label={error ? 'some error' : 'Type here...'} // как вывести текст типа ошибки ?
                 variant="outlined"
                 className={''}
             />
@@ -54,6 +58,6 @@ const AddItemForm = (props: PropsType) => {
             {/*{emptyValueError && <div>Please type title!</div>}*/}
         </div>
     );
-};
+})
 
 export default AddItemForm;

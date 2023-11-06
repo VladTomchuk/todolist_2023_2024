@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, memo} from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import {lightBlue} from "@mui/material/colors";
 
@@ -7,8 +7,8 @@ type PropsType = {
     callback: (isDone: boolean) => void
 }
 
-const SuperCheckbox = (props: PropsType) => {
-
+const SuperCheckbox = memo((props: PropsType) => {
+    //console.log('SuperCheckbox is rendered!')
     const label = {inputProps: {'aria-label': 'Checkbox demo'}};
     const sx = {
         color: lightBlue[900],
@@ -26,12 +26,9 @@ const SuperCheckbox = (props: PropsType) => {
             checked={props.isDone}
             onChange={onChangeIsDoneStatusHandler}
             {...label}
-            defaultChecked
             sx={sx}
         />
-
-
     );
-};
+});
 
 export default SuperCheckbox;
