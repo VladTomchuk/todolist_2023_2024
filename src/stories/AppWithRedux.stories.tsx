@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
 import AppWithRedux from "../AppWithRedux";
-import {ReduxStoreProviderDecorator} from "../../.storybook/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 
 export default {
     title: 'AppWithRedux',
