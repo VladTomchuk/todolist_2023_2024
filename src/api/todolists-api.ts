@@ -8,6 +8,11 @@ const settings = {
     }
 }
 
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+    ...settings
+})
+
 type TodolistType = {
     id: string
     title: string
@@ -15,27 +20,64 @@ type TodolistType = {
     order: number
 }
 
-type ResponseDataType<D> = {
+type ResponseDataType<D = {}> = {
     resultCode: number
     messages: string[],
     data: D
 }
 
+type TaskType = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+
+type GetTasksResponse = {
+    items: TaskType[]
+    error: string | null
+    totalCount: number
+}
+
+type CreateTaskResponse = {
+    resultCode: number
+    messages: string[],
+    data: TaskType
+}
+
 export const TodolistsApi = {
 
     getTodolists() {
-        return axios.get<TodolistType[]>('https://social-network.samuraijs.com/api/1.1//todo-lists', settings)
+        return instance.get<TodolistType[]>('todo-lists')
     },
 
     postTodolist(title: string) {
-        return axios.post<ResponseDataType<{ item: TodolistType }>>('https://social-network.samuraijs.com/api/1.1//todo-lists', {title: title}, settings)
+        return instance.post<ResponseDataType<{ item: TodolistType }>>('todo-lists', {title: title})
     },
 
     deleteTodolist(todolistID: string) {
-        return axios.delete<ResponseDataType<{}>>(`https://social-network.samuraijs.com/api/1.1//todo-lists/${todolistID}`, settings)
+        return instance.delete<ResponseDataType>(`todo-lists/${todolistID}`)
     },
 
     updateTodolist(todolistId: string, title: string) {
-        return axios.put<ResponseDataType<{}>>(`https://social-network.samuraijs.com/api/1.1//todo-lists/${todolistId}`, {title: title}, settings)
+        return instance.put<ResponseDataType>(`todo-lists/${todolistId}`, {title: title})
+    },
+
+    getTasks(todolistId: string) {
+        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
+    },
+
+    createTask(todolistId: string, taskId: string) {
+        return instance.get<CreateTaskResponse>(`todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete<ResponseDataType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     }
 }
