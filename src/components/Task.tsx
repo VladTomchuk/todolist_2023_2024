@@ -1,13 +1,14 @@
 import React, {useCallback} from "react";
-import {TaskType} from "../App";
 import EditableSpan from "./EditableSpan";
 import SuperCheckbox from "./SuperCheckbox";
 import {RemoveSuperButton} from "./RemoveSuperButton";
+import {TaskType} from "../api/todolists-api";
+import {TaskStatuses} from "../state/types";
 
 
 type TaskPropsType = {
     removeTask: (taskId: string) => void
-    changeIsDoneStatus: (taskId: string, isDone: boolean) => void
+    changeIsDoneStatus: (taskId: string,  status: TaskStatuses) => void
     updateTaskHandler: (taskId: string, newTitle: string) => void
 
 } & TaskType
@@ -15,8 +16,8 @@ type TaskPropsType = {
 export const Task = React.memo((props: TaskPropsType) => {
     //console.log('Task is rendered!')
 
-    const onChangeValueIsDoneHandler = useCallback((isDone: boolean) => {
-        props.changeIsDoneStatus(props.id, isDone)
+    const onChangeValueIsDoneHandler = useCallback(( status: TaskStatuses) => {
+        props.changeIsDoneStatus(props.id, status)
     }, [props.changeIsDoneStatus, props.id])
     const updateCallback = useCallback((newTitle: string) => {
         props.updateTaskHandler(props.id, newTitle)
@@ -27,10 +28,10 @@ export const Task = React.memo((props: TaskPropsType) => {
 
     return (
         <ul>
-            <li key={props.id} className={props.isDone ? "taskDone" : "task"}>
+            <li key={props.id} className={props.status === TaskStatuses.Completed ? "taskDone" : "task"}>
 
                 <SuperCheckbox
-                    isDone={props.isDone}
+                    status={props.status}
                     callback={onChangeValueIsDoneHandler}
                 />
 

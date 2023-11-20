@@ -1,4 +1,5 @@
 import axios from "axios";
+import {TaskPriorities, TaskStatuses} from "../state/types";
 
 
 const settings = {
@@ -13,7 +14,7 @@ const instance = axios.create({
     ...settings
 })
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     addedDate: string,
@@ -26,12 +27,11 @@ type ResponseDataType<D = {}> = {
     data: D
 }
 
-type TaskType = {
+export type TaskType = {
     description: string
     title: string
-    completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string
@@ -39,6 +39,8 @@ type TaskType = {
     order: number
     addedDate: string
 }
+
+
 
 type GetTasksResponse = {
     items: TaskType[]

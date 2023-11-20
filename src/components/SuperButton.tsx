@@ -1,6 +1,5 @@
 import Button from "@mui/material/Button";
-import React, {ChangeEvent, memo, useCallback} from "react";
-import {FilterValuesType} from "../AppWithRedux";
+import React, { memo} from "react";
 
 
 type SuperButtonPropsType = {

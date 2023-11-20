@@ -1,10 +1,12 @@
 import React, {ChangeEvent, memo} from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import {lightBlue} from "@mui/material/colors";
+import {TaskStatuses} from "../state/types";
+
 
 type PropsType = {
-    isDone: boolean
-    callback: (isDone: boolean) => void
+    status: TaskStatuses
+    callback: (status: TaskStatuses) => void
 }
 
 const SuperCheckbox = memo((props: PropsType) => {
@@ -18,12 +20,15 @@ const SuperCheckbox = memo((props: PropsType) => {
     }
 
     const onChangeIsDoneStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.callback(e.currentTarget.checked)
+        const newStatus = e.currentTarget.checked
+            ? TaskStatuses.Completed
+            : TaskStatuses.New
+        props.callback(newStatus)
     }
 
     return (
         <Checkbox
-            checked={props.isDone}
+            checked={props.status === TaskStatuses.Completed}
             onChange={onChangeIsDoneStatusHandler}
             {...label}
             sx={sx}

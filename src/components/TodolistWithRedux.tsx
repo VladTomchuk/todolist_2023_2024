@@ -1,70 +1,73 @@
 import React, {useCallback} from "react";
-import {TaskType, TodolistType} from "../App";
 import "../App.css";
 import {Task} from "./Task";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Button from '@mui/material/Button';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../state/tasks-reducer";
-import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "../state/todolists-reducer";
+import {
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    removeTodolistAC,
+    TodolistDomainType
+} from "../state/todolists-reducer";
 import {SuperButton} from "./SuperButton";
 import {RemoveSuperButton} from "./RemoveSuperButton";
+import { TaskType} from "../api/todolists-api";
+import {TaskStatuses} from "../state/types";
 
 
 type PropsType = {
-    todolist: TodolistType
+    todolist: TodolistDomainType
 }
 
 export const TodolistWithRedux = React.memo((props: PropsType) => {
     console.log('todolist is called')
 
-    const {todolistId, title, filter} = props.todolist
+    const {id, title, filter} = props.todolist
     let tasks = useSelector<AppRootStateType, TaskType[]>(
-        state => state.tasks[todolistId]
+        state => state.tasks[id]
     )
     const dispatch = useDispatch()
 
     const onAllClickHandler = useCallback(() => {
-        dispatch(changeTodolistFilterAC(todolistId, 'all'))
-    }, [todolistId])
+        dispatch(changeTodolistFilterAC(id, 'all'))
+    }, [id])
     const onActiveClickHandler = useCallback(() => {
-        dispatch(changeTodolistFilterAC(todolistId, 'active'))
-    }, [todolistId])
+        dispatch(changeTodolistFilterAC(id, 'active'))
+    }, [id])
     const onComletedClickHandler = useCallback(() => {
-        dispatch(changeTodolistFilterAC(todolistId, 'completed'))
-    }, [todolistId])
+        dispatch(changeTodolistFilterAC(id, 'completed'))
+    }, [id])
 
 
     if (filter === 'active') {
-        tasks = tasks.filter(t => !t.isDone)
+        tasks = tasks.filter(t => !t.status)
     }
     if (filter === 'completed') {
-        tasks = tasks.filter(t => !t.isDone)
+        tasks = tasks.filter(t => !t.status)
     }
 
 
     const AddItemFormHandler = useCallback((newTitle: string) => {
-        dispatch(addTaskAC(todolistId, newTitle))
+        dispatch(addTaskAC(id, newTitle))
     }, [])
     const updateTodoTitleHandler = useCallback((newTitle: string) => {
-        dispatch(changeTodolistTitleAC(todolistId, newTitle))
-    }, [changeTodolistTitleAC, todolistId])
+        dispatch(changeTodolistTitleAC(id, newTitle))
+    }, [changeTodolistTitleAC, id])
     const onclickRemoveTodolistHandler = useCallback(() => {
-        dispatch(removeTodolistAC(todolistId))
-    }, [removeTodolistAC, todolistId])
+        dispatch(removeTodolistAC(id))
+    }, [removeTodolistAC, id])
     const updateTaskHandler = useCallback((taskId: string, newTitle: string) => {
-        dispatch(changeTaskTitleAC(todolistId, taskId, newTitle))
-    }, [todolistId])
-    const changeIsDoneStatusHandler = useCallback((taskId: string, isDone: boolean) => {
-        dispatch(changeTaskStatusAC(taskId, isDone, todolistId))
-    }, [changeTaskStatusAC, todolistId])
+        dispatch(changeTaskTitleAC(id, taskId, newTitle))
+    }, [id])
+    const changeIsDoneStatusHandler = useCallback((taskId: string, status: TaskStatuses) => {
+        dispatch(changeTaskStatusAC(taskId, status, id))
+    }, [changeTaskStatusAC, id])
     const removeTaskCallback = useCallback((taskId: string) => {
-        dispatch(removeTaskAC(taskId, todolistId))
-    }, [removeTaskAC, todolistId])
+        dispatch(removeTaskAC(taskId, id))
+    }, [removeTaskAC, id])
 
     return (
         <div className={"todolistContainer"}>

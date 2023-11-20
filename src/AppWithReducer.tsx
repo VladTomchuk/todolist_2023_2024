@@ -1,4 +1,4 @@
-import React, {Reducer, useReducer, useState} from 'react';
+import React, {Reducer, useReducer} from 'react';
 import './App.css';
 import {Todolist} from "./components/Todolist";
 import {v1} from "uuid";
@@ -9,8 +9,8 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import {
     addTodolistAC,
-    changeTodolistFilterAC, changeTodolistTitleAC,
-    removeTodolistAC,
+    changeTodolistFilterAC, changeTodolistTitleAC, FilterValuesType,
+    removeTodolistAC, TodolistDomainType,
     TodolistsActionType,
     todolistsReducer
 } from "./state/todolists-reducer";
@@ -22,20 +22,9 @@ import {
     TasksActionType,
     tasksReducer
 } from "./state/tasks-reducer";
+import { TaskType} from "./api/todolists-api";
+import {TaskPriorities, TaskStatuses} from "./state/types";
 
-export type FilterValuesType = 'all' | 'active' | 'completed'
-
-export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean
-}
-
-export type TodolistType = {
-    todolistId: string,
-    title: string,
-    filter: FilterValuesType
-}
 
 export type TasksStateType = {
     [todolistId: string]: TaskType[]
@@ -46,25 +35,63 @@ function AppWithReducer() {
     const todolistId1 = v1()
     const todolistId2 = v1()
 
-    let [todolists, dispatchToTodolists] = useReducer<Reducer<Array<TodolistType>, TodolistsActionType>>(todolistsReducer, [
-        {todolistId: todolistId1, title: "Technologies", filter: "all"},
-        {todolistId: todolistId2, title: "What to learn?", filter: "all"}
+    let [todolists, dispatchToTodolists] = useReducer<Reducer<Array<TodolistDomainType>, TodolistsActionType>>(todolistsReducer, [
+        {id: todolistId1, title: "Technologies", filter: "all", addedDate: "", order: 0},
+        {id: todolistId2, title: "What to learn?", filter: "all", addedDate: "", order: 0}
     ])
 
     let [tasks, dispatchToTasks] = useReducer<Reducer<TasksStateType, TasksActionType>>(tasksReducer, {
             [todolistId1]: [
-                {id: v1(), title: "HTML&CSS", isDone: true},
-                {id: v1(), title: "JS", isDone: true},
-                {id: v1(), title: "ReactJS", isDone: false},
-                {id: v1(), title: "GraphQL", isDone: true},
-                {id: v1(), title: "Redux", isDone: false}
+                {
+                    id: v1(),
+                    title: "HTML&CSS",
+                    status: TaskStatuses.Completed,
+                    todoListId: todolistId1,
+                    startDate: '',
+                    deadline: '',
+                    addedDate: '',
+                    order: 0,
+                    priority: TaskPriorities.Low,
+                    description: ''
+                },
+                {
+                    id: v1(),
+                    title: "JS",
+                    status: TaskStatuses.Completed,
+                    todoListId: todolistId1,
+                    startDate: '',
+                    deadline: '',
+                    addedDate: '',
+                    order: 0,
+                    priority: TaskPriorities.Low,
+                    description: ''
+                },
             ],
             [todolistId2]: [
-                {id: v1(), title: "HTML&CSS", isDone: true},
-                {id: v1(), title: "JS", isDone: true},
-                {id: v1(), title: "ReactJS", isDone: false},
-                {id: v1(), title: "GraphQL", isDone: true},
-                {id: v1(), title: "Redux", isDone: false}
+                {
+                    id: v1(),
+                    title: "HTML&CSS",
+                    status: TaskStatuses.Completed,
+                    todoListId: todolistId2,
+                    startDate: '',
+                    deadline: '',
+                    addedDate: '',
+                    order: 0,
+                    priority: TaskPriorities.Low,
+                    description: ''
+                },
+                {
+                    id: v1(),
+                    title: "JS",
+                    status: TaskStatuses.Completed,
+                    todoListId: todolistId2,
+                    startDate: '',
+                    deadline: '',
+                    addedDate: '',
+                    order: 0,
+                    priority: TaskPriorities.Low,
+                    description: ''
+                },
             ]
         }
     )
@@ -72,9 +99,9 @@ function AppWithReducer() {
     const getTasksForRender = (tasks: TaskType[], currentFilterValue: FilterValuesType) => {
         switch (currentFilterValue) {
             case "active":
-                return tasks.filter(t => !t.isDone)
+                return tasks.filter(t => t.status === TaskStatuses.New)
             case 'completed':
-                return tasks.filter(t => t.isDone)
+                return tasks.filter(t => t.status === TaskStatuses.Completed)
             default:
                 return tasks
         }
@@ -88,8 +115,8 @@ function AppWithReducer() {
     const addTask = (todolistId: string, title: string) => {
         dispatchToTasks(addTaskAC(todolistId, title))
     }
-    const changeIsDoneStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-        dispatchToTasks(changeTaskStatusAC(taskId, isDone, todolistId))
+    const changeIsDoneStatus = (todolistId: string, taskId: string, status: TaskStatuses) => {
+        dispatchToTasks(changeTaskStatusAC(taskId, status, todolistId))
     }
     const removeTodolist = (todolistId: string) => {
         let action = removeTodolistAC(todolistId)
@@ -110,15 +137,15 @@ function AppWithReducer() {
 
     const todolistsComponents = todolists.map(tl => {
 
-            const tasksForTodolist = getTasksForRender(tasks[tl.todolistId], tl.filter)
+            const tasksForTodolist = getTasksForRender(tasks[tl.id], tl.filter)
 
             return (
                 <Grid item>
                     <Paper elevation={12} style={{padding: '20px'}}>
                         <Todolist
-                            key={tl.todolistId}
+                            key={tl.id}
                             title={tl.title}
-                            todolistId={tl.todolistId}
+                            todolistId={tl.id}
                             currentFilterValue={tl.filter}
                             tasks={tasksForTodolist}
                             removeTask={removeTask}
