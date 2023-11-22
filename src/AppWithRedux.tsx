@@ -1,16 +1,18 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import AddItemForm from "./components/AddItemForm";
 import AppBarComponent from "./components/AppBar";
 import Container from '@mui/material/Container';
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import {addTodolistAC, TodolistDomainType} from "./state/todolists-reducer";
-
+import {
+    addTodolistAC, addTodolistsTC, fetchTodolistsTC,
+    TodolistDomainType
+} from "./state/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TodolistWithRedux} from "./components/TodolistWithRedux";
-import {TaskType} from "./api/todolists-api";
+import {TaskType} from "./state/types";
 
 
 export type TasksStateType = {
@@ -23,8 +25,14 @@ const AppWithRedux = () => {
     const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchTodolistsTC())
+    }, [])
+
     const addTodo = useCallback((newTitle: string) => {
-        dispatch(addTodolistAC(newTitle))
+        // @ts-ignore
+        dispatch(addTodolistsTC(newTitle))
     }, [dispatch])
 
     const todolistsComponents = todolists.map(tl => {

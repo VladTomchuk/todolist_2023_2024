@@ -8,22 +8,23 @@ import Container from '@mui/material/Container';
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import {
-    addTodolistAC,
-    changeTodolistFilterAC, changeTodolistTitleAC, FilterValuesType,
-    removeTodolistAC, TodolistDomainType,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    FilterValuesType,
+    removeTodolistAC,
+    TodolistDomainType,
     TodolistsActionType,
     todolistsReducer
 } from "./state/todolists-reducer";
 import {
     addTaskAC,
-    changeTaskStatusAC,
+    // changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
     TasksActionType,
     tasksReducer
 } from "./state/tasks-reducer";
-import { TaskType} from "./api/todolists-api";
-import {TaskPriorities, TaskStatuses} from "./state/types";
+import {TaskPriorities, TaskStatuses, TaskType} from "./state/types";
 
 
 export type TasksStateType = {
@@ -116,7 +117,7 @@ function AppWithReducer() {
         dispatchToTasks(addTaskAC(todolistId, title))
     }
     const changeIsDoneStatus = (todolistId: string, taskId: string, status: TaskStatuses) => {
-        dispatchToTasks(changeTaskStatusAC(taskId, status, todolistId))
+        // dispatchToTasks(changeTaskStatusAC(taskId, status, todolistId))
     }
     const removeTodolist = (todolistId: string) => {
         let action = removeTodolistAC(todolistId)
@@ -124,12 +125,12 @@ function AppWithReducer() {
         dispatchToTasks(action)
     }
     const addTodo = (newTitle: string) => {
-        let action = addTodolistAC(newTitle)
-        dispatchToTodolists(action)
-        dispatchToTasks(action)
+        // let action = addTodolistAC(newTitle)
+        // dispatchToTodolists(action)
+        // dispatchToTasks(action)
     }
     const updateTask = (todolistId: string, taskId: string, newTitle: string) => {
-        dispatchToTasks(changeTaskTitleAC(todolistId, taskId, newTitle))
+        // dispatchToTasks(changeTaskTitleAC(todolistId, taskId, newTitle))
     }
     const updateTodoTitle = (todolistId: string, newTitle: string) => {
         dispatchToTodolists(changeTodolistTitleAC(todolistId, newTitle))

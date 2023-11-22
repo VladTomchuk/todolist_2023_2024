@@ -1,21 +1,28 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import "../App.css";
 import {Task} from "./Task";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../state/tasks-reducer";
+import {
+    changeTaskStatusAC,
+    createTaskTC,
+    fetchTasksThunkTC,
+    removeTaskTC,
+    updateTaskFieldTC,
+} from "../state/tasks-reducer";
 import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
+    changeTodolistTitleTC,
     removeTodolistAC,
+    removeTodolistTC,
     TodolistDomainType
 } from "../state/todolists-reducer";
 import {SuperButton} from "./SuperButton";
 import {RemoveSuperButton} from "./RemoveSuperButton";
-import { TaskType} from "../api/todolists-api";
-import {TaskStatuses} from "../state/types";
+import {TaskStatuses, TaskType} from "../state/types";
 
 
 type PropsType = {
@@ -24,6 +31,11 @@ type PropsType = {
 
 export const TodolistWithRedux = React.memo((props: PropsType) => {
     console.log('todolist is called')
+
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchTasksThunkTC(props.todolist.id))
+    }, [])
 
     const {id, title, filter} = props.todolist
     let tasks = useSelector<AppRootStateType, TaskType[]>(
@@ -51,23 +63,30 @@ export const TodolistWithRedux = React.memo((props: PropsType) => {
 
 
     const AddItemFormHandler = useCallback((newTitle: string) => {
-        dispatch(addTaskAC(id, newTitle))
+        // @ts-ignore
+        dispatch(createTaskTC(id, newTitle))
     }, [])
     const updateTodoTitleHandler = useCallback((newTitle: string) => {
-        dispatch(changeTodolistTitleAC(id, newTitle))
+        // @ts-ignore
+        dispatch(changeTodolistTitleTC(id, newTitle))
     }, [changeTodolistTitleAC, id])
     const onclickRemoveTodolistHandler = useCallback(() => {
-        dispatch(removeTodolistAC(id))
+        // @ts-ignore
+        dispatch(removeTodolistTC(id))
     }, [removeTodolistAC, id])
     const updateTaskHandler = useCallback((taskId: string, newTitle: string) => {
-        dispatch(changeTaskTitleAC(id, taskId, newTitle))
+        // @ts-ignore
+        dispatch(updateTaskFieldTC(id, taskId, { title: newTitle }));
     }, [id])
     const changeIsDoneStatusHandler = useCallback((taskId: string, status: TaskStatuses) => {
-        dispatch(changeTaskStatusAC(taskId, status, id))
+        // @ts-ignore
+        dispatch(updateTaskFieldTC(id, taskId, { status }));
     }, [changeTaskStatusAC, id])
     const removeTaskCallback = useCallback((taskId: string) => {
-        dispatch(removeTaskAC(taskId, id))
-    }, [removeTaskAC, id])
+        const action = removeTaskTC(taskId, id)
+        //@ts-ignore
+        dispatch(action)
+    }, [])
 
     return (
         <div className={"todolistContainer"}>

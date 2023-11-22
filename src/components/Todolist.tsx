@@ -8,8 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 
 import {FilterValuesType} from "../state/todolists-reducer";
-import {TaskStatuses} from "../state/types";
-import {TaskType} from "../api/todolists-api";
+import {TaskStatuses, TaskType} from "../state/types";
 
 type PropsType = {
     title: string

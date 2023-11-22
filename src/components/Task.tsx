@@ -2,8 +2,7 @@ import React, {useCallback} from "react";
 import EditableSpan from "./EditableSpan";
 import SuperCheckbox from "./SuperCheckbox";
 import {RemoveSuperButton} from "./RemoveSuperButton";
-import {TaskType} from "../api/todolists-api";
-import {TaskStatuses} from "../state/types";
+import {TaskStatuses, TaskType} from "../state/types";
 
 
 type TaskPropsType = {

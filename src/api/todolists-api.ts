@@ -1,5 +1,5 @@
 import axios from "axios";
-import {TaskPriorities, TaskStatuses} from "../state/types";
+import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../state/types";
 
 
 const settings = {
@@ -14,33 +14,11 @@ const instance = axios.create({
     ...settings
 })
 
-export type TodolistType = {
-    id: string
-    title: string
-    addedDate: string,
-    order: number
-}
-
 type ResponseDataType<D = {}> = {
     resultCode: number
     messages: string[],
     data: D
 }
-
-export type TaskType = {
-    description: string
-    title: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
-
-
 
 type GetTasksResponse = {
     items: TaskType[]
@@ -54,12 +32,11 @@ type CreateTaskResponse = {
     data: TaskType
 }
 
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
     title: string
     description: string
-    //completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
 }
@@ -89,7 +66,7 @@ export const TodolistsApi = {
     createTask(todolistId: string, title: string) {
         return instance.post<CreateTaskResponse>(`todo-lists/${todolistId}/tasks`, {title})
     },
-    deleteTask(todolistId: string, taskId: string) {
+    deleteTask(taskId: string, todolistId: string) {
         return instance.delete<ResponseDataType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
