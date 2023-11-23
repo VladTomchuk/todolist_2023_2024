@@ -135,6 +135,7 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
         type: 'SET-TASKS', todolistId, tasks
     } as const
 }
+
 export const fetchTasksThunkTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         TodolistsApi.getTasks(todolistId)
@@ -163,56 +164,6 @@ export const createTaskTC = (todolistId: string, title: string) => {
             })
     }
 }
-
-// export const changeTaskTitleTC = (todolistId: string, taskId: string, newTitle: string) => {
-//
-//     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
-//         const state = getState()
-//         const task = state.tasks[todolistId].find(t => t.id === taskId)
-//         if (!task) {
-//             console.warn('task is not found in state!')
-//             return
-//         }
-//         const model: UpdateTaskModelType = {
-//             title: newTitle,
-//             description: task.description,
-//             status: task.status,
-//             priority: task.priority,
-//             startDate: task.startDate,
-//             deadline: task.deadline,
-//         }
-//         TodolistsApi.updateTask(todolistId, taskId, model)
-//             .then(resp => {
-//                 const action = changeTaskTitleAC(todolistId, taskId, newTitle)
-//                 dispatch(action)
-//             })
-//     }
-// }
-//
-// export const changeTaskStatusTC = (taskId: string, status: TaskStatuses, todolistId: string) => {
-//
-//     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
-//         const state = getState()
-//         const task = state.tasks[todolistId].find(t => t.id === taskId)
-//         if (!task) {
-//             console.warn('task is not found in state!')
-//             return
-//         }
-//         const model: UpdateTaskModelType = {
-//             title: task.title,
-//             description: task.description,
-//             status: status,
-//             priority: task.priority,
-//             startDate: task.startDate,
-//             deadline: task.deadline,
-//         }
-//         TodolistsApi.updateTask(todolistId, taskId, model)
-//             .then(resp => {
-//                 const action = changeTaskStatusAC( taskId, status,todolistId)
-//                 dispatch(action)
-//             })
-//     }
-// }
 export const updateTaskFieldTC = (
     todolistId: string,
     taskId: string,
