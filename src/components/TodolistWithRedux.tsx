@@ -11,7 +11,7 @@ import {
     fetchTasksThunkTC,
     removeTaskTC,
     updateTaskFieldTC,
-} from "../state/tasks-reducer";
+} from "../state/reducers/tasks-reducer";
 import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
@@ -19,7 +19,7 @@ import {
     removeTodolistAC,
     removeTodolistTC,
     TodolistDomainType
-} from "../state/todolists-reducer";
+} from "../state/reducers/todolists-reducer";
 import {SuperButton} from "./SuperButton";
 import {RemoveSuperButton} from "./RemoveSuperButton";
 import {TaskStatuses, TaskType} from "../state/types";

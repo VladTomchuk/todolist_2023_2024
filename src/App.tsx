@@ -7,7 +7,7 @@ import AppBarComponent from "./components/AppBar";
 import Container from '@mui/material/Container';
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import {FilterValuesType, TodolistDomainType} from "./state/todolists-reducer";
+import {FilterValuesType, TodolistDomainType} from "./state/reducers/todolists-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "./state/types";
 
 

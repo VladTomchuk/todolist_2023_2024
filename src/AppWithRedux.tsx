@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import {
     addTodolistAC, addTodolistsTC, fetchTodolistsTC,
     TodolistDomainType
-} from "./state/todolists-reducer";
+} from "./state/reducers/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TodolistWithRedux} from "./components/TodolistWithRedux";

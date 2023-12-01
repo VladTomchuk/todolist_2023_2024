@@ -15,7 +15,7 @@ import {
     TodolistDomainType,
     TodolistsActionType,
     todolistsReducer
-} from "./state/todolists-reducer";
+} from "./state/reducers/todolists-reducer";
 import {
     addTaskAC,
     // changeTaskStatusAC,
@@ -23,7 +23,7 @@ import {
     removeTaskAC,
     TasksActionType,
     tasksReducer
-} from "./state/tasks-reducer";
+} from "./state/reducers/tasks-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "./state/types";
 
 

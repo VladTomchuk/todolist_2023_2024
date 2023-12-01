@@ -6,11 +6,19 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {LinearProgress} from "@mui/material";
+import {ErrorSnackbar} from "./ErrorSnackbar/ErrorSnackbar";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../state/store";
+import {RequestStatusType} from "../state/reducers/appReducer";
 
 const AppBarComponent = () => {
+    let status = useSelector<AppRootStateType, RequestStatusType>(state=> state.app.status)
     return (
         <Box sx={{ flexGrow: 1 }}>
+            <ErrorSnackbar/>
             <AppBar position="static">
+
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -26,6 +34,7 @@ const AppBarComponent = () => {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress/>}
             </AppBar>
         </Box>
     );
