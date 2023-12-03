@@ -6,6 +6,7 @@ import {TodolistsApi, UpdateTaskModelType} from "../../api/todolists-api";
 import {AppRootStateType} from "../store";
 import {AddTodolistACType, RemoveTodolistACType, SetTodolistsACType} from "./todolists-reducer";
 import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from "./appReducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 
 const initialState: TasksStateType = {}
@@ -104,10 +105,14 @@ export const fetchTasksThunkTC = (todolistId: string) => {
         dispatch(setAppStatusAC('loading'))
         TodolistsApi.getTasks(todolistId)
             .then((resp) => {
+
                 const tasks = resp.data.items
-                const action = setTasksAC(todolistId, tasks,)
+                const action = setTasksAC(todolistId, tasks)
                 dispatch(action)
                 dispatch(setAppStatusAC('succeeded'))
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -115,8 +120,15 @@ export const removeTaskTC = (taskId: string, todolistId: string) => {
     return (dispatch: ThunkDispatch) => {
         TodolistsApi.deleteTask(taskId, todolistId)
             .then(resp => {
-                const action = removeTaskAC(taskId, todolistId)
-                dispatch(action)
+                if (resp.data.resultCode === 0) {
+                    dispatch(removeTaskAC(taskId, todolistId))
+                    dispatch(setAppStatusAC('succeeded'))
+                } else {
+                    handleServerAppError(dispatch, resp.data)
+                }
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -130,13 +142,11 @@ export const createTaskTC = (todolistId: string, title: string) => {
                     dispatch(action)
                     dispatch(setAppStatusAC('succeeded'))
                 } else {
-                    if (resp.data.messages.length) {
-                        dispatch(setAppErrorAC(resp.data.messages[0]))
-                    } else {
-                        dispatch(setAppErrorAC('Some error occurred'))
-                    }
-                    dispatch(setAppStatusAC('failed'))
+                    handleServerAppError(dispatch, resp.data)
                 }
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -163,20 +173,26 @@ export const updateTaskFieldTC = (
         ...updatedFields, // Обновляем только переданные поля
     };
 
+    dispatch(setAppStatusAC('loading'))
+
     TodolistsApi.updateTask(todolistId, taskId, model)
         .then((resp) => {
-            if ('title' in updatedFields) {
-                dispatch(changeTaskTitleAC(todolistId, taskId, updatedFields.title!));
+            if (resp.data.resultCode === 0) {
+                if ('title' in updatedFields) {
+                    dispatch(changeTaskTitleAC(todolistId, taskId, updatedFields.title!));
+                    dispatch(setAppStatusAC('succeeded'))
+                }
+                if ('status' in updatedFields) {
+                    dispatch(changeTaskStatusAC(taskId, updatedFields.status!, todolistId));
+                    dispatch(setAppStatusAC('succeeded'))
+                }
+            } else {
+                handleServerAppError(dispatch, resp.data)
             }
-            if ('status' in updatedFields) {
-                dispatch(changeTaskStatusAC(taskId, updatedFields.status!, todolistId));
-            }
-            // Добавьте обработку других полей по аналогии
         })
         .catch((error) => {
-            // Обработка ошибок
-            console.error('Failed to update task:', error);
-        });
+            handleServerNetworkError(error, dispatch)
+        })
 };
 
 ////////TYPES//////////
@@ -200,4 +216,4 @@ type AddTaskACType = ReturnType<typeof addTaskAC>
 type ChangeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
 type ChangeTaskTitleACType = ReturnType<typeof changeTaskTitleAC>
 
-type ThunkDispatch = Dispatch<TasksActionType | SetAppStatusActionType | SetAppErrorActionType>
+export type ThunkDispatch = Dispatch<TasksActionType | SetAppStatusActionType | SetAppErrorActionType>

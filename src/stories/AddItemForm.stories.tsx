@@ -13,3 +13,9 @@ export const AddItemFormBaseStory = () => {
         <AddItemForm callback={addItemCallback}/>
     )
 }
+
+export const AddItemFormDisabledtory = () => {
+    return (
+        <AddItemForm callback={addItemCallback} entityStatus={'loading'}/>
+    )
+}

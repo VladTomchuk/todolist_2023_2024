@@ -27,21 +27,23 @@ import {TaskStatuses, TaskType} from "../state/types";
 
 type PropsType = {
     todolist: TodolistDomainType
+    demo?: boolean
 }
 
-export const TodolistWithRedux = React.memo((props: PropsType) => {
-    console.log('todolist is called')
-
-    useEffect(() => {
-        // @ts-ignore
-        dispatch(fetchTasksThunkTC(props.todolist.id))
-    }, [])
+export const TodolistWithRedux = React.memo(({demo = false, ...props}: PropsType) => {
 
     const {id, title, filter} = props.todolist
     let tasks = useSelector<AppRootStateType, TaskType[]>(
         state => state.tasks[id]
     )
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (demo) return
+        // @ts-ignore
+        dispatch(fetchTasksThunkTC(props.todolist.id))
+    }, [])
+
 
     const onAllClickHandler = useCallback(() => {
         dispatch(changeTodolistFilterAC(id, 'all'))
@@ -58,7 +60,7 @@ export const TodolistWithRedux = React.memo((props: PropsType) => {
         tasks = tasks.filter(t => !t.status)
     }
     if (filter === 'completed') {
-        tasks = tasks.filter(t => !t.status)
+        tasks = tasks.filter(t => t.status)
     }
 
 
@@ -69,19 +71,19 @@ export const TodolistWithRedux = React.memo((props: PropsType) => {
     const updateTodoTitleHandler = useCallback((newTitle: string) => {
         // @ts-ignore
         dispatch(changeTodolistTitleTC(id, newTitle))
-    }, [changeTodolistTitleAC, id])
+    }, [id])
     const onclickRemoveTodolistHandler = useCallback(() => {
         // @ts-ignore
         dispatch(removeTodolistTC(id))
-    }, [removeTodolistAC, id])
+    }, [id])
     const updateTaskHandler = useCallback((taskId: string, newTitle: string) => {
         // @ts-ignore
-        dispatch(updateTaskFieldTC(id, taskId, { title: newTitle }));
+        dispatch(updateTaskFieldTC(id, taskId, {title: newTitle}));
     }, [id])
     const changeIsDoneStatusHandler = useCallback((taskId: string, status: TaskStatuses) => {
         // @ts-ignore
-        dispatch(updateTaskFieldTC(id, taskId, { status }));
-    }, [changeTaskStatusAC, id])
+        dispatch(updateTaskFieldTC(id, taskId, {status}));
+    }, [id])
     const removeTaskCallback = useCallback((taskId: string) => {
         const action = removeTaskTC(taskId, id)
         //@ts-ignore
@@ -97,10 +99,10 @@ export const TodolistWithRedux = React.memo((props: PropsType) => {
                         callback={updateTodoTitleHandler}
                     />
                 </h3>
-                <RemoveSuperButton callback={onclickRemoveTodolistHandler}/>
+                <RemoveSuperButton callback={onclickRemoveTodolistHandler} entityStatus={props.todolist.entityStatus}/>
 
             </div>
-            <AddItemForm callback={AddItemFormHandler}/>
+            <AddItemForm callback={AddItemFormHandler} entityStatus={props.todolist.entityStatus}/>
             <div>
                 {tasks.map((t: TaskType) => {
 

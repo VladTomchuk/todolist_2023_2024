@@ -14,7 +14,7 @@ const instance = axios.create({
     ...settings
 })
 
-type ResponseDataType<D = {}> = {
+export type ResponseDataType<D = {}> = {
     resultCode: number
     messages: string[],
     data: D

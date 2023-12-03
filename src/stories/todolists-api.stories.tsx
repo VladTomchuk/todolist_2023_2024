@@ -70,7 +70,6 @@ export const UpdateTodolistTitle = () => {
             <div>{JSON.stringify(state)}</div>
             <input type="text"
                    placeholder={"Type todolistId"}
-                // value={todolistId}
                    onChange={(e) => setTodolistId(e.currentTarget.value)}
             />
             <input type="text"

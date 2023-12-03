@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "../App.css";
 import {Task} from "./Task";
 import AddItemForm from "./AddItemForm";
@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 
 import {FilterValuesType} from "../state/reducers/todolists-reducer";
 import {TaskStatuses, TaskType} from "../state/types";
+import {useDispatch} from "react-redux";
+import {fetchTasksThunkTC} from "../state/reducers/tasks-reducer";
 
 type PropsType = {
     title: string
@@ -22,9 +24,11 @@ type PropsType = {
     removeTodolist: (todolistId: string) => void
     updateTask: (todolistId: string, taskId: string, newTitle: string) => void
     updateTodoTitle: (todolistId: string, newTitle: string) => void
+    // demo?: boolean
 }
 
 export const Todolist = (props: PropsType) => {
+
     const onAllClickHandler = () => {
         props.changeFilter(props.todolistId, 'all')
     }

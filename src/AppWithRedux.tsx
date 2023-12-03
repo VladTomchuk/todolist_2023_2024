@@ -19,13 +19,19 @@ export type TasksStateType = {
     [todolistId: string]: TaskType[]
 }
 
-const AppWithRedux = () => {
-    console.log('App is called')
+type PropsType = {
+    demo?: boolean
+}
+
+const AppWithRedux = ({demo = false, ...props}: PropsType) => {
 
     const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists)
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (demo) {
+            return
+        }
         // @ts-ignore
         dispatch(fetchTodolistsTC())
     }, [])
@@ -42,6 +48,7 @@ const AppWithRedux = () => {
                     <Paper elevation={12} style={{padding: '20px'}}>
                         <TodolistWithRedux
                             todolist={tl}
+                            demo={demo}
                         />
                     </Paper>
                 </Grid>

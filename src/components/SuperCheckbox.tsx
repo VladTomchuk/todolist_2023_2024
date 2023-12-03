@@ -10,7 +10,6 @@ type PropsType = {
 }
 
 const SuperCheckbox = memo((props: PropsType) => {
-    //console.log('SuperCheckbox is rendered!')
     const label = {inputProps: {'aria-label': 'Checkbox demo'}};
     const sx = {
         color: lightBlue[900],

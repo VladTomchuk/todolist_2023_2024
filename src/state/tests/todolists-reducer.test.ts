@@ -13,8 +13,8 @@ let todolistId2 = v1()
 let startState: TodolistDomainType[] = []
 beforeEach(() => {
     startState = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: "", order: 0},
-        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: "", order: 0}
+        {id: todolistId1, title: 'What to learn', filter: 'all', entityStatus: 'idle', addedDate: "", order: 0},
+        {id: todolistId2, title: 'What to buy', filter: 'all', entityStatus: 'idle', addedDate: "", order: 0}
 
     ]
 })
@@ -28,7 +28,6 @@ test('correct todolist should be removed', () => {
 test('correct todolist should be added', () => {
 
     const newState: TodolistType = {id: todolistId1, title: 'What to learn', addedDate: "", order: 0}
-
 
 
     let newTodolistTitle = 'New Todolist'

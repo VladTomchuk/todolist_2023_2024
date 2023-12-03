@@ -21,8 +21,8 @@ function App() {
     const todolistId2 = v1()
 
     let [todolists, setTodolists] = useState<TodolistDomainType[]>([
-        {id: todolistId1, title: "Technologies", filter: "all", addedDate: "", order: 0},
-        {id: todolistId2, title: "What to learn?", filter: "all", addedDate: "", order: 0}
+        {id: todolistId1, title: "Technologies", filter: "all",entityStatus: 'idle', addedDate: "", order: 0},
+        {id: todolistId2, title: "What to learn?", filter: "all",entityStatus: 'idle', addedDate: "", order: 0}
     ])
     let [tasks, setTasks] = useState<TasksStateType>({
             [todolistId1]: [
@@ -140,7 +140,7 @@ function App() {
     }
     const addTodo = (newTitle: string) => {
         const newTodolistId = v1()
-        setTodolists([{id: newTodolistId, title: newTitle, filter: "all", addedDate: "", order: 0}, ...todolists])
+        setTodolists([{id: newTodolistId, title: newTitle, filter: "all", entityStatus: 'idle', addedDate: "", order: 0}, ...todolists])
         setTasks({...tasks, [newTodolistId]: []})
     }
     const updateTask = (todolistId: string, taskId: string, newTitle: string) => {

@@ -1,11 +1,13 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useCallback, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import {RequestStatusType} from "../state/reducers/appReducer";
 
 type PropsType = {
     callback: (newTitle: string) => void
+    entityStatus?: RequestStatusType
 }
-const AddItemForm = memo((props: PropsType) => {
+const AddItemForm = memo(({entityStatus, ...props}: PropsType) => {
     //console.log('addItemForm is called')
     let [title, setTitle] = useState('')
     let [error, setError] = useState<string | null>(null)
@@ -43,6 +45,7 @@ const AddItemForm = memo((props: PropsType) => {
         <div>
 
             <TextField
+                disabled={entityStatus === 'loading'}
                 error={!!error}
                 size="small"
                 value={title}
@@ -54,7 +57,8 @@ const AddItemForm = memo((props: PropsType) => {
                 className={''}
             />
 
-            <Button style={styledButton} variant="contained" size="small" onClick={addTitleHandler}>+</Button>
+            <Button style={styledButton} variant="contained" size="small" onClick={addTitleHandler}
+                    disabled={entityStatus === 'loading'}>+</Button>
             {/*{emptyValueError && <div>Please type title!</div>}*/}
         </div>
     );

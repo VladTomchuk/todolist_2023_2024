@@ -12,6 +12,6 @@ const addItemCallback = action('EditableSpan has been changed!')
 
 export const EditableSpanBaseStory = () => {
     return (
-        <AppWithRedux/>
+        <AppWithRedux demo={true}/>
     )
 }

@@ -1,3 +1,6 @@
+import {RequestStatusType} from "./reducers/appReducer";
+import {FilterValuesType} from "./reducers/todolists-reducer";
+
 export enum TaskStatuses {
     New = 0,
     InProgress = 1,
@@ -15,7 +18,7 @@ export enum TaskPriorities {
 
 export type TodolistType = {
     id: string
-    title: string
+    title: string,
     addedDate: string,
     order: number
 }
