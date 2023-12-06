@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
-import {Task} from "../components/Task";
-import {TaskPriorities, TaskStatuses} from "../state/types";
+import {Task} from "./Task";
+import {TaskPriorities, TaskStatuses} from "../../state/types";
 
 
 export default {

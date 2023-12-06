@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useCallback, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import {RequestStatusType} from "../state/reducers/appReducer";
+import {RequestStatusType} from "../../state/reducers/appReducer";
 
 type PropsType = {
     callback: (newTitle: string) => void

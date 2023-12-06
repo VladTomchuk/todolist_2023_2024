@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
-import "../App.css";
-import {Task} from "./Task";
-import AddItemForm from "./AddItemForm";
-import EditableSpan from "./EditableSpan";
+import "../App/App.css";
+import {Task} from "../components/Task/Task";
+import AddItemForm from "../components/AddItemForm/AddItemForm";
+import EditableSpan from "../components/EditableSpan/EditableSpan";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';

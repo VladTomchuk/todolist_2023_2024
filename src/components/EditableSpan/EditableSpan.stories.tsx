@@ -1,5 +1,5 @@
 import {action} from '@storybook/addon-actions';
-import EditableSpan from "../components/EditableSpan";
+import EditableSpan from "./EditableSpan";
 
 export default {
     title: 'EditableSpan',

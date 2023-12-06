@@ -1,17 +1,17 @@
 import React, {useCallback, useEffect} from "react";
-import "../App.css";
-import {Task} from "./Task";
-import AddItemForm from "./AddItemForm";
-import EditableSpan from "./EditableSpan";
+import "../../../App/App.css";
+import {Task} from "../../../components/Task/Task";
+import AddItemForm from "../../../components/AddItemForm/AddItemForm";
+import EditableSpan from "../../../components/EditableSpan/EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../state/store";
+import {AppRootStateType} from "../../../state/store";
 import {
     changeTaskStatusAC,
     createTaskTC,
     fetchTasksThunkTC,
     removeTaskTC,
     updateTaskFieldTC,
-} from "../state/reducers/tasks-reducer";
+} from "../../../state/reducers/tasks-reducer";
 import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
@@ -19,10 +19,10 @@ import {
     removeTodolistAC,
     removeTodolistTC,
     TodolistDomainType
-} from "../state/reducers/todolists-reducer";
-import {SuperButton} from "./SuperButton";
-import {RemoveSuperButton} from "./RemoveSuperButton";
-import {TaskStatuses, TaskType} from "../state/types";
+} from "../../../state/reducers/todolists-reducer";
+import {SuperButton} from "../../../components/SuperButton";
+import {RemoveSuperButton} from "../../../components/RemoveSuperButton";
+import {TaskStatuses, TaskType} from "../../../state/types";
 
 
 type PropsType = {

@@ -1,8 +1,8 @@
 import React, {useCallback} from "react";
-import EditableSpan from "./EditableSpan";
-import SuperCheckbox from "./SuperCheckbox";
-import {RemoveSuperButton} from "./RemoveSuperButton";
-import {TaskStatuses, TaskType} from "../state/types";
+import EditableSpan from "../EditableSpan/EditableSpan";
+import SuperCheckbox from "../SuperCheckbox";
+import {RemoveSuperButton} from "../RemoveSuperButton";
+import {TaskStatuses, TaskType} from "../../state/types";
 
 
 type TaskPropsType = {
