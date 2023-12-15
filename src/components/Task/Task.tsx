@@ -13,7 +13,6 @@ type TaskPropsType = {
 } & TaskType
 
 export const Task = React.memo((props: TaskPropsType) => {
-    //console.log('Task is rendered!')
 
     const onChangeValueIsDoneHandler = useCallback(( status: TaskStatuses) => {
         props.changeIsDoneStatus(props.id, status)
