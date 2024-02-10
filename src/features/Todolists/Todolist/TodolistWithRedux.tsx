@@ -36,6 +36,7 @@ export const TodolistWithRedux = React.memo(({demo = false, ...props}: PropsType
     let tasks = useSelector<AppRootStateType, TaskType[]>(
         state => state.tasks[id]
     )
+    //const tasks = useSelector((state: AppRootStateType) => state.tasks[id])
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -46,13 +47,13 @@ export const TodolistWithRedux = React.memo(({demo = false, ...props}: PropsType
 
 
     const onAllClickHandler = useCallback(() => {
-        dispatch(changeTodolistFilterAC(id, 'all'))
+        dispatch(changeTodolistFilterAC({todolistId: id, newFilter: 'all'}))
     }, [id])
     const onActiveClickHandler = useCallback(() => {
-        dispatch(changeTodolistFilterAC(id, 'active'))
+        dispatch(changeTodolistFilterAC({todolistId: id, newFilter: 'active'}))
     }, [id])
     const onComletedClickHandler = useCallback(() => {
-        dispatch(changeTodolistFilterAC(id, 'completed'))
+        dispatch(changeTodolistFilterAC({todolistId: id, newFilter: 'completed'}))
     }, [id])
 
 
@@ -89,7 +90,7 @@ export const TodolistWithRedux = React.memo(({demo = false, ...props}: PropsType
         //@ts-ignore
         dispatch(action)
     }, [])
-
+    debugger
     return (
         <div className={"todolistContainer"}>
             <div className={"todoTitleDiv"}>

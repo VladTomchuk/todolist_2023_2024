@@ -7,14 +7,15 @@ import {TaskStatuses, TaskType} from "../../state/types";
 
 type TaskPropsType = {
     removeTask: (taskId: string) => void
-    changeIsDoneStatus: (taskId: string,  status: TaskStatuses) => void
+    changeIsDoneStatus: (taskId: string, status: TaskStatuses) => void
     updateTaskHandler: (taskId: string, newTitle: string) => void
 
 } & TaskType
 
 export const Task = React.memo((props: TaskPropsType) => {
 
-    const onChangeValueIsDoneHandler = useCallback(( status: TaskStatuses) => {
+
+    const onChangeValueIsDoneHandler = useCallback((status: TaskStatuses) => {
         props.changeIsDoneStatus(props.id, status)
     }, [props.changeIsDoneStatus, props.id])
     const updateCallback = useCallback((newTitle: string) => {

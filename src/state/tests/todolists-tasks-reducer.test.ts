@@ -18,7 +18,7 @@ test('ids should be equals', () => {
 
     const newTodo = {id: '4', title: 'New todo', addedDate: "", order: 0}
 
-    const action = addTodolistAC(newTodo)
+    const action = addTodolistAC({todolist: newTodo})
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)
@@ -27,17 +27,17 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0]
     const idFromTodolists = endTodolistsState[0].id
 
-    expect(idFromTasks).toBe(action.todolist.id)
-    expect(idFromTodolists).toBe(action.todolist.id)
+    expect(idFromTasks).toBe(action.payload.todolist.id)
+    expect(idFromTodolists).toBe(action.payload.todolist.id)
 })
-test('entity status of todolist should to be chsnged',()=>{
+test('entity status of todolist should to be chsnged', () => {
     const startState: TodolistDomainType[] = [
         {id: '1', title: 'What to learn', filter: "all", entityStatus: 'idle', addedDate: "", order: 0},
         {id: '2', title: 'What to buy', filter: "all", entityStatus: 'idle', addedDate: "", order: 0},
         {id: '3', title: 'What to read', filter: "all", entityStatus: 'idle', addedDate: "", order: 0},
     ]
 
-    const action = changeTodolistEntityStatusAC('1', 'loading')
+    const action = changeTodolistEntityStatusAC({todolistId: '1', status: 'loading'})
     const endState = todolistsReducer(startState, action)
     expect(endState[0].entityStatus).toBe('loading')
     expect(endState[1].entityStatus).toBe('idle')

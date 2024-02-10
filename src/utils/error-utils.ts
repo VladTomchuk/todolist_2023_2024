@@ -1,18 +1,24 @@
-import {setAppErrorAC, setAppStatusAC} from "../state/reducers/appReducer";
-import {ThunkDispatch} from "../state/reducers/tasks-reducer";
-import {ResponseDataType} from "../api/todolists-api";
+import { Dispatch } from "redux";
+import { ResponseDataType } from "../api/todolists-api";
+import { appActions } from "../state/reducers/appReducer";
 
-export const handleServerAppError = <D>(dispatch: ThunkDispatch, data: ResponseDataType<D>) => {
-    if (data.messages.length) {
-        dispatch(setAppErrorAC(data.messages[0]))
-    } else {
-        dispatch(setAppErrorAC('Some error occurred'))
-    }
-    dispatch(setAppStatusAC('failed'))
-    return;
-}
+export const handleServerAppError = <D>(
+  dispatch: Dispatch,
+  data: ResponseDataType<D>
+) => {
+  if (data.messages.length) {
+    dispatch(appActions.setAppError({ error: data.messages[0] }));
+  } else {
+    dispatch(appActions.setAppError({ error: "Some error occurred" }));
+  }
+  dispatch(appActions.setAppStatus({ status: "failed" }));
+  return;
+};
 
-export const handleServerNetworkError = (error: { message: string }, dispatch: ThunkDispatch) => {
-    dispatch(setAppErrorAC(error.message))
-    dispatch(setAppStatusAC('failed'))
-}
+export const handleServerNetworkError = (
+  error: { message: string },
+  dispatch: Dispatch
+) => {
+  dispatch(appActions.setAppError({ error: error.message }));
+  dispatch(appActions.setAppStatus({ status: "failed" }));
+};
